@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var presentData = getCookie("presentData");
+
+            //console.log("Present Data:", presentData)
+
+            if (presentData) {
+                var form_dataobject_result = JSON.parse(presentData); //ovj  [{},{},{}]
+                var tbl_row_data = "";
+
+                form_dataobject_result.forEach((form_data_object, index) => {
+                    tbl_row_data += '<tr>';
+                    for (var value in form_data_object) {
+                        tbl_row_data += '<td>' + form_data_object[value] + '</td>';
+                    }
+                    tbl_row_data += '<td><button class="btn btn-warning" onclick="editRow(' + index + ')">Edit</button></td>';
+                    tbl_row_data += '<td><button class="btn btn-danger" onclick="deleteRow(' + index + ')">Delete</button></td>';
+                    tbl_row_data += '</tr>';
+                });
+
+                document.getElementById('formDataBody').innerHTML = tbl_row_data;
+            } else {
+                console.error("Error parsing presentData:", error);
+            }
+        })
+
+
+
+        //getData from cookie
+        function getCookie(name) {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return decodeURIComponent(cookie.substring(name.length + 1));
+                }
+            }
+            return null;
+        }
+
+
+        function editRow(index) {
+            var presentData = getCookie("presentData");
+
+            if (presentData) {
+                var form_dataobject_result = JSON.parse(presentData);
+                var selectedData = form_dataobject_result[index];
+
+                //console.log(selectedData)
+
+                document.cookie = 'editData=' + JSON.stringify(selectedData);
+                document.cookie = 'editIndex=' + index;
+
+                window.location.href = 'index.html';
+            }
+        }
+
+        function deleteRow(index) {
+            var presentData = getCookie("presentData");
+
+            if (presentData) {
+                var form_dataobject_result = JSON.parse(presentData);
+
+                form_dataobject_result.splice(index, 1);
+
+                document.cookie = 'presentData=' + JSON.stringify(form_dataobject_result);
+
+                alert('Record deleted');
+
+                location.reload();
+            }
+        }
+
+
+        //delete editData and editIndex cookie
+
+        function del_cookie(name) {
+            alert('working')
+            document.cookie = 'editData' +
+                '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+
+            document.cookie = 'editIndex' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+            window.location.href = 'index.html'
+        }
+    </script>
+</head>
+
+<body>
+    <div class="form_table mb-5 mt-5 p-3">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>PhoneNumber</th>
+                    <th>Gender</th>
+                    <th>Language</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>Message</th>
+                    <th>formsumit(d/t)</th>
+                    <th colspan="2" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="formDataBody">
+
+            </tbody>
+        </table>
+    </div>
+    <a href="javascript:del_cookie(name)">>> Back to Form_Employee Registration</a>
+</body>
+
+</html>

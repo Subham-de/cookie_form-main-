@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function dateClick(){
+            var date_id = document.getElementById('date');
+            var date_pick = document.getElementById('date_time')
+
+            if(date_pick.value==""){
+                date_id.innerText = 'select anything'
+            }
+            else{
+                date_id.innerText = date_pick.value
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="datetime" id="date_time" >
+    <button onclick="dateClick()">sumbit</button>
+    <p id="date"></p>
+</body>
+</html>

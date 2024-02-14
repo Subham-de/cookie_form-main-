@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.form_table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table{
+    width: 70%;
+    margin-top: 50px;
+    border: 2px solid black;
+}
+
+table caption{
+    font-size: 30px;
+    background-color: #777;
+    color: white;
+}
+
+tbody {
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+    float: right;
+    padding: 10px;
+    margin: 30px 20px;
+    color: black;
+}
+a:hover{
+    color: red;
+}
+
+

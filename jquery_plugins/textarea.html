@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>textarea</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="/path/to/cdn/jquery.min.js"></script>
+    <script src="/path/to//jquery.textareaCounter.plugin.js"></script>
+    <style>
+        .text_color {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .text_color .text-style {
+            border: 3px solid rgb(146, 17, 17);
+        }
+    </style>
+    <script>
+        $(function () {
+            var availableTags = ["jQuery.com", "jQueryUI.com", "jQueryMobile.com", "jQueryScript.net", "jQuery", "Free jQuery Plugins"]; // array of autocomplete words
+            var minWordLength = 2;
+            function split(val) {
+                return val.split(' ');
+            }
+
+            function extractLast(term) {
+                return split(term).pop();
+            }
+            $("#demo") // jQuery Selector
+                // don't navigate away from the field on tab when selecting an item
+                .bind("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.TAB && $(this).data("ui-autocomplete").menu.active) {
+                        event.preventDefault();
+                    }
+                }).autocomplete({
+                    minLength: minWordLength,
+                    source: function (request, response) {
+                        // delegate back to autocomplete, but extract the last term
+                        var term = extractLast(request.term);
+                        if (term.length >= minWordLength) {
+                            response($.ui.autocomplete.filter(availableTags, term));
+                        }
+                    },
+                    focus: function () {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push(ui.item.value);
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push("");
+                        this.value = terms.join(" ");
+                        return false;
+                    }
+                });
+        });
+
+        $('#wordcounter').textareaCount({
+
+            // Default: Infinity
+             maxCharacterSize: 140,
+             warningNumber: 120,
+             displayFormat:'#input characters | #words words'
+        });
+    </script>
+</head>
+
+<body>
+    <div class="text_color">
+        <h2 align="center" style="color: green;">AutoSuggestion Textarea</h2>
+        <textarea class="text-style" id="demo" cols="50" rows="10"></textarea>
+    </div>
+    <div>
+        <h2 style="color: blueviolet;">WordCounterfortextarea</h2>
+        <textarea name="word" id="wordcounter" cols="50" rows="10">
+        
+        
+
+    </textarea>
+    <p id="input"></p> | <p id="words"></p>
+    </div>
+</body>
+
+</html>
